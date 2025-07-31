@@ -31,7 +31,7 @@
 
 
 // lib/mockData.ts
-import { DashboardAnalytics, UserWithAnalytics, Exercise, RehabPlan, Notification, ContentPage } from '@/lib/types';
+import { DashboardAnalytics, UserWithAnalytics, Exercise, RehabPlan, Notification, ContentPage, ExerciseCategory } from '@/lib/types';
 
 export const mockUsers: UserWithAnalytics[] = [
   { _id: 'usr_1', username: 'John Doe', email: 'john.d@example.com', status: 'Active', plan: 'FAI Post Op', startDate: '2025-07-01T00:00:00Z', lastLogin: '2025-07-28T10:00:00Z', analytics: { complianceRate: 95, averageIrritability: 2.1 } },
@@ -41,27 +41,36 @@ export const mockUsers: UserWithAnalytics[] = [
   { _id: 'usr_5', username: 'David Brown', email: 'david.b@example.com', status: 'Active', plan: 'Hip Replacement', startDate: '2025-06-25T00:00:00Z', lastLogin: '2025-07-25T18:00:00Z', analytics: { complianceRate: 75, averageIrritability: 6.3 } },
 ];
 
+export const mockCategories: ExerciseCategory[] = [
+  { _id: 'cat_1', title: 'Hip / Strengthening' },
+  { _id: 'cat_2', title: 'Core' },
+  { _id: 'cat_3', title: 'Mobility' },
+  { _id: 'cat_4', title: 'Pilates' },
+  { _id: 'cat_5', title: 'Balance' },
+];
+
+// IMPORTANT: Updated mockExercises to use the new object structure
 export const mockExercises: Exercise[] = [
-    { _id: 'ex_1', name: 'Glute Bridge', description: 'Lie on your back with knees bent...', videoUrl: 'https://example.com/video1.mp4', reps: '15', sets: '3', category: 'Hip / Strengthening', tags: ['Phase 1', 'Core'] },
-    { _id: 'ex_2', name: 'Clamshell', description: 'Lie on your side with knees bent...', videoUrl: 'https://example.com/video2.mp4', reps: '20', sets: '3', category: 'Hip / Strengthening', tags: ['Phase 1', 'Pilates'] },
-    { _id: 'ex_3', name: 'Standing Hip Abduction', description: 'Stand tall and lift one leg out to the side...', videoUrl: 'https://example.com/video3.mp4', reps: '12', sets: '3', category: 'Strengthening', tags: ['Phase 2', 'Balance'] },
+  { _id: 'ex_1', name: 'Glute Bridge', description: 'Lie on your back with knees bent...', videoUrl: 'https://example.com/video1.mp4', reps: '15', sets: '3', category: { _id: 'cat_1', title: 'Hip / Strengthening' }, tags: ['Phase 1', 'Core'] },
+  { _id: 'ex_2', name: 'Clamshell', description: 'Lie on your side with knees bent...', videoUrl: 'https://example.com/video2.mp4', reps: '20', sets: '3', category: { _id: 'cat_1', title: 'Hip / Strengthening' }, tags: ['Phase 1', 'Pilates'] },
+  { _id: 'ex_3', name: 'Standing Hip Abduction', description: 'Stand tall and lift one leg out to the side...', videoUrl: 'https://example.com/video3.mp4', reps: '12', sets: '3', category: { _id: 'cat_5', title: 'Balance' }, tags: ['Phase 2', 'Strengthening'] },
 ];
 
 export const mockPlans: RehabPlan[] = [
-    { _id: 'plan_1', name: 'FAI Post Operative', type: 'Paid', durationWeeks: 12 },
-    { _id: 'plan_2', name: 'Hip Replacement Phase 1', type: 'Paid', durationWeeks: 4 },
-    { _id: 'plan_3', name: 'General Hip Mobility', type: 'Free', durationWeeks: 2 },
+  { _id: 'plan_1', name: 'FAI Post Operative', type: 'Paid', durationWeeks: 12 },
+  { _id: 'plan_2', name: 'Hip Replacement Phase 1', type: 'Paid', durationWeeks: 4 },
+  { _id: 'plan_3', name: 'General Hip Mobility', type: 'Free', durationWeeks: 2 },
 ];
 
 export const mockNotifications: Notification[] = [
-    { _id: 'notif_1', title: 'Weekly Check-in', body: 'Don\'t forget to log your weekly resilience score!', targetGroup: 'All', status: 'Sent', sentTime: '2025-07-25T10:00:00Z' },
-    { _id: 'notif_2', title: 'New Video Added!', body: 'Check out our new video on managing post-surgery pain.', targetGroup: 'All', status: 'Sent', sentTime: '2025-07-22T15:00:00Z' },
+  { _id: 'notif_1', title: 'Weekly Check-in', body: 'Don\'t forget to log your weekly resilience score!', targetGroup: 'All', status: 'Sent', sentTime: '2025-07-25T10:00:00Z' },
+  { _id: 'notif_2', title: 'New Video Added!', body: 'Check out our new video on managing post-surgery pain.', targetGroup: 'All', status: 'Sent', sentTime: '2025-07-22T15:00:00Z' },
 ];
 
 export const mockContentPages: ContentPage[] = [
-    { _id: 'page_1', title: 'Privacy Policy', slug: 'privacy-policy', content: '<h1>Privacy Policy</h1><p>Your data is safe with us...</p>', updatedAt: '2025-06-01T12:00:00Z' },
-    { _id: 'page_2', title: 'Terms & Conditions', slug: 'terms-and-conditions', content: '<h1>Terms & Conditions</h1><p>By using this app, you agree to...</p>', updatedAt: '2025-06-01T12:00:00Z' },
-    { _id: 'page_3', title: 'Help / FAQs', slug: 'help-faqs', content: '<h1>FAQs</h1><p><strong>How do I reset my password?</strong>...</p>', updatedAt: '2025-07-15T11:00:00Z' },
+  { _id: 'page_1', title: 'Privacy Policy', slug: 'privacy-policy', content: '<h1>Privacy Policy</h1><p>Your data is safe with us...</p>', updatedAt: '2025-06-01T12:00:00Z' },
+  { _id: 'page_2', title: 'Terms & Conditions', slug: 'terms-and-conditions', content: '<h1>Terms & Conditions</h1><p>By using this app, you agree to...</p>', updatedAt: '2025-06-01T12:00:00Z' },
+  { _id: 'page_3', title: 'Help / FAQs', slug: 'help-faqs', content: '<h1>FAQs</h1><p><strong>How do I reset my password?</strong>...</p>', updatedAt: '2025-07-15T11:00:00Z' },
 ];
 
 export const mockDashboardData: DashboardAnalytics = {

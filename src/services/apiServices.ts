@@ -1,8 +1,19 @@
 // services/apiService.ts
-import { DashboardAnalytics, Exercise, UserWithAnalytics, RehabPlan, Notification, ContentPage } from '@/lib/types';
-import { mockDashboardData, mockUsers, mockExercises, mockPlans, mockNotifications, mockContentPages } from '@/lib/mockData';
+import { DashboardAnalytics, Exercise, UserWithAnalytics, RehabPlan, Notification, ContentPage, ExerciseCategory } from '@/lib/types';
+import { mockDashboardData, mockUsers, mockExercises, mockPlans, mockNotifications, mockContentPages, mockCategories } from '@/lib/mockData';
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+// Helper to simulate backend FormData processing
+const processFormData = (formData: FormData): Omit<Exercise, '_id' | 'videoUrl'> => {
+    const name = formData.get('name') as string;
+    const category = formData.get('category') as string;
+    const reps = formData.get('reps') as string;
+    const sets = formData.get('sets') as string;
+    const description = formData.get('description') as string;
+    const tags = (formData.get('tags') as string).split(',').map(tag => tag.trim());
+    return { name, category, reps, sets, description, tags };
+}
 
 export const apiService = {
   getDashboardAnalytics: async (): Promise<DashboardAnalytics> => {
@@ -17,7 +28,6 @@ export const apiService = {
   },
   getExercises: async (): Promise<Exercise[]> => {
     await delay(500);
-    console.log("Fetching exercises...");
     return mockExercises;
   },
   getRehabPlans: async (): Promise<RehabPlan[]> => {
@@ -57,5 +67,45 @@ export const apiService = {
         return page;
     }
     throw new Error("Page not found");
-  }
+  },
+  getExerciseCategories: async (): Promise<ExerciseCategory[]> => {
+    await delay(300);
+    return mockCategories;
+  },
+  addExercise: async (formData: FormData): Promise<Exercise> => {
+    await delay(1000);
+    console.log("API: Adding exercise with data:", Object.fromEntries(formData));
+    const newExerciseData = processFormData(formData);
+    const newExercise: Exercise = {
+      _id: `ex_${Date.now()}`,
+      ...newExerciseData,
+      videoUrl: 'https://example.com/new_video.mp4', // Mock URL
+    };
+    mockExercises.unshift(newExercise);
+    return newExercise;
+  },
+  updateExercise: async (formData: FormData): Promise<Exercise> => {
+    await delay(1000);
+    console.log("API: Updating exercise with data:", Object.fromEntries(formData));
+    const exerciseId = formData.get('_id') as string;
+    const updatedData = processFormData(formData);
+    const exerciseIndex = mockExercises.findIndex(ex => ex._id === exerciseId);
+
+    if (exerciseIndex === -1) throw new Error("Exercise not found");
+
+    mockExercises[exerciseIndex] = {
+        ...mockExercises[exerciseIndex],
+        ...updatedData
+    };
+    return mockExercises[exerciseIndex];
+  },
+  deleteExercise: async (exerciseId: string): Promise<{ _id: string }> => {
+    await delay(1000);
+    console.log("API: Deleting exercise with ID:", exerciseId);
+    const index = mockExercises.findIndex(ex => ex._id === exerciseId);
+    if (index > -1) {
+      mockExercises.splice(index, 1);
+    }
+    return { _id: exerciseId };
+  },
 };

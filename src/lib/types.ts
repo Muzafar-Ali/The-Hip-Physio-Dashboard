@@ -23,6 +23,11 @@ export interface User {
   lastLogin: string;
 }
 
+export interface ExerciseCategory {
+  _id: string;
+  title: string;
+}
+
 export interface Exercise {
   _id: string;
   name: string;
@@ -30,24 +35,25 @@ export interface Exercise {
   videoUrl: string;
   reps: string;
   sets: string;
-  category: string;
+  // This now represents a populated object from the backend
+  category: ExerciseCategory; 
   tags: string[];
 }
 
 export interface RehabPlan {
-    _id: string;
-    name: string;
-    type: 'Paid' | 'Free';
-    durationWeeks: number;
+  _id: string;
+  name: string;
+  type: 'Paid' | 'Free';
+  durationWeeks: number;
 }
 
 export interface Notification {
-    _id: string;
-    title: string;
-    body: string;
-    targetGroup: 'All' | 'Selected';
-    status: 'Sent' | 'Scheduled';
-    sentTime?: string;
+  _id: string;
+  title: string;
+  body: string;
+  targetGroup: 'All' | 'Selected';
+  status: 'Sent' | 'Scheduled';
+  sentTime?: string;
 }
 
 export interface ContentPage {
@@ -62,8 +68,8 @@ export interface ContentPage {
 // Types for API responses and Zustand stores
 export interface UserWithAnalytics extends User {
   analytics: {
-      complianceRate: number;
-      averageIrritability: number;
+    complianceRate: number;
+    averageIrritability: number;
   }
 }
 
